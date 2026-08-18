@@ -47,6 +47,7 @@
 #define EGM_UDP_SERVER_H
 
 #include <boost/asio.hpp>
+#include <boost/shared_ptr.hpp>
 
 namespace abb
 {
