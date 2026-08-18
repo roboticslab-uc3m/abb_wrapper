@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(abb_libegm)
 
-find_package(Boost REQUIRED COMPONENTS system thread)
+find_package(Boost REQUIRED COMPONENTS thread)
 
 #############################
 ## Google Protocol Buffers ##
