@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
  *
- * Copyright (c) 
+ * Copyright (c)
  * 2015, ABB Schweiz AG
  * 2021, JOiiNT LAB, Fondazione Istituto Italiano di Tecnologia, Intellimech Consorzio per la Meccatronica.
  * All rights reserved.
@@ -34,12 +34,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  ***********************************************************************************************************************
- * 
+ *
  * Authors: Gianluca Lentini, Ugo Alberto Simioni
  * Date:18/01/2022
  * Version 1.0
  * Description: this package provides a ROS node that communicates with the controller using Robot Web Services 2.0, original code can be retrieved at https://github.com/ros-industrial/abb_libegm
- * 
+ *
  ***********************************************************************************************************************
  */
 
@@ -55,7 +55,7 @@ namespace egm
  * Class definitions: UDPServer
  */
 
-UDPServer::UDPServer(boost::asio::io_service& io_service,
+UDPServer::UDPServer(boost::asio::io_context& io_service,
                      unsigned short port_number,
                      AbstractUDPServerInterface* p_interface)
 :
@@ -114,7 +114,7 @@ void UDPServer::receiveCallback(const boost::system::error_code& error, const st
 {
   server_data_.p_data = receive_buffer_;
   server_data_.bytes_transferred = (int) bytes_transferred;
-  
+
   if (error == boost::system::errc::success && p_interface_)
   {
     // Process the received data via the callback method (creates the reply message).

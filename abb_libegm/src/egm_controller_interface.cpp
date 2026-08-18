@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
  *
- * Copyright (c) 
+ * Copyright (c)
  * 2015, ABB Schweiz AG
  * 2021, JOiiNT LAB, Fondazione Istituto Italiano di Tecnologia, Intellimech Consorzio per la Meccatronica.
  * All rights reserved.
@@ -34,12 +34,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  ***********************************************************************************************************************
- * 
+ *
  * Authors: Gianluca Lentini, Ugo Alberto Simioni
  * Date:18/01/2022
  * Version 1.0
  * Description: this package provides a ROS node that communicates with the controller using Robot Web Services 2.0, original code can be retrieved at https://github.com/ros-industrial/abb_libegm
- * 
+ *
  ***********************************************************************************************************************
  */
 
@@ -77,7 +77,7 @@ void EGMControllerInterface::ControllerMotion::writeInputs(const wrapper::Input&
  boost::lock_guard<boost::mutex> lock(read_mutex_);
 
  inputs_.CopyFrom(inputs);
- 
+
  read_data_ready_ = true;
  read_condition_variable_.notify_all();
 }
@@ -150,7 +150,7 @@ void EGMControllerInterface::ControllerMotion::writeOutputs(const wrapper::Outpu
  * Primary methods
  */
 
-EGMControllerInterface::EGMControllerInterface(boost::asio::io_service& io_service,
+EGMControllerInterface::EGMControllerInterface(boost::asio::io_context& io_service,
                                                const unsigned short port_number,
                                                const BaseConfiguration& configuration)
 :

@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
  *
- * Copyright (c) 
+ * Copyright (c)
  * 2015, ABB Schweiz AG
  * 2021, JOiiNT LAB, Fondazione Istituto Italiano di Tecnologia, Intellimech Consorzio per la Meccatronica.
  * All rights reserved.
@@ -34,12 +34,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  ***********************************************************************************************************************
- * 
+ *
  * Authors: Gianluca Lentini, Ugo Alberto Simioni
  * Date:18/01/2022
  * Version 1.0
  * Description: this package provides a ROS node that communicates with the controller using Robot Web Services 2.0, original code can be retrieved at https://github.com/ros-industrial/abb_libegm
- * 
+ *
  ***********************************************************************************************************************
  */
 
@@ -76,7 +76,7 @@ public:
    * \param port_number for the server's UDP socket.
    * \param configuration for the interface's configuration.
    */
-  EGMTrajectoryInterface(boost::asio::io_service& io_service,
+  EGMTrajectoryInterface(boost::asio::io_context& io_service,
                          const unsigned short port_number,
                          const TrajectoryConfiguration& configuration = TrajectoryConfiguration());
 
@@ -86,7 +86,7 @@ public:
    * \return TrajectoryConfiguration containing the current configuration.
    */
   TrajectoryConfiguration getConfiguration();
-  
+
   /**
    * \brief Update the interface's configuration (update is only applied for new EGM communication sessions).
    *
@@ -174,7 +174,7 @@ public:
    * \return bool indicating if the interface accepted the command or not.
    */
   bool finishStaticGoal(const bool resume = false);
-  
+
   /**
    * \brief Retrieve an execution progress from the trajectory interface.
    *
@@ -327,7 +327,7 @@ private:
    * \brief Class for managing trajectory motion data, between an external user and the EGM communication loop.
    */
   class TrajectoryMotion
-  {    
+  {
   public:
     /**
      * \brief A constructor.
@@ -341,7 +341,7 @@ private:
     configurations_(configurations),
     motion_step_(configurations)
     {}
-    
+
     /**
      * \brief Update the interface's configurations.
      *
@@ -352,7 +352,7 @@ private:
       configurations_ = configurations;
       motion_step_.updateConfigurations(configurations);
     }
-        
+
     /**
      * \brief Generate outputs, based on the current goal and e.g. the use of spline interpolation.
      *
@@ -440,7 +440,7 @@ private:
      * \return bool indicating if the interface accepted the command or not.
      */
     bool finishStaticGoal(const bool resume);
-    
+
     /**
      * \brief Retrieve an execution progress from the trajectory interface.
      *
@@ -460,7 +460,7 @@ private:
       RampDown,  ///< \brief Ramp down the current velocity references.
       StaticGoal ///< \brief Follow either static position or velocity goals.
     };
-      
+
     /**
      * \brief Enum for the different execution sub states the interface can handle.
      */
@@ -498,12 +498,12 @@ private:
         do_duration_factor_update(false),
         duration_factor(1.0)
         {};
-        
+
         /**
          * \brief Flag indicating if the current velocities should be completely ramped out.
          */
         bool do_stop;
-        
+
         /**
          * \brief Flag indicating if the execution should resume after a complete stop has occurred.
          */
@@ -518,12 +518,12 @@ private:
          * \brief Flag indicating if the current motion's velocity should be ramped down.
          */
         bool do_ramp_down;
-      
+
         /**
          * \brief Flag indicating if static goal execution should be started.
          */
         bool do_static_goal_start;
-        
+
         /**
          * \brief Flag indicating if the static goal should be updated fast.
          */
@@ -533,7 +533,7 @@ private:
          * \brief Flag indicating if the static position goal should be updated.
          */
         bool do_static_position_goal_update;
-        
+
         /**
          * \brief Flag indicating if the static velocity goal should be updated.
          */
@@ -543,7 +543,7 @@ private:
          * \brief Flag indicating if the static goal execution should be finished.
          */
         bool do_static_goal_finish;
-        
+
         /**
          * \brief The pending static position goal to follow.
          */
@@ -574,7 +574,7 @@ private:
       has_active_goal(false),
       has_updated_execution_progress(false)
       {}
-      
+
       /**
        * \brief Flag indicating if there is a new goal.
        *
@@ -591,7 +591,7 @@ private:
        * \brief The pending events for the trajectory motion execution.
        */
       PendingEvents pending_events;
-      
+
       /**
        * \brief Flag indicating if the execution progress has been updated or not.
        */
@@ -607,9 +607,9 @@ private:
        */
       boost::mutex mutex;
     };
-    
+
     /**
-     * \brief Container for trajectory data. E.g. trajectory queues, and the currently active trajectory. 
+     * \brief Container for trajectory data. E.g. trajectory queues, and the currently active trajectory.
      */
     struct TrajectoryContainer
     {
@@ -622,12 +622,12 @@ private:
        * \brief Queue for temporary storing trajectories to execute (e.g. during a discard trajectories event).
        */
       std::deque<boost::shared_ptr<Trajectory> > temporary_queue;
-    
+
       /**
        * \brief The currently active trajectory.
        */
       boost::shared_ptr<Trajectory> p_current;
-      
+
       /**
        * \brief Mutex for protecting the data.
        */
@@ -776,7 +776,7 @@ private:
     };
 
     /**
-     * \brief Class for managing motion step data. 
+     * \brief Class for managing motion step data.
      */
     class MotionStep
     {
@@ -811,18 +811,18 @@ private:
          * \brief The estimated sample time.
          */
         double estimated_sample_time;
-      
+
         /**
          * \brief A scaling factor for the goal duration.
          */
         double duration_factor;
-        
+
         /**
          * \brief Container for the current robot feedback values.
          */
-        wrapper::Feedback feedback;   
+        wrapper::Feedback feedback;
       };
-      
+
       /**
        * \brief A constructor.
        *
@@ -852,21 +852,21 @@ private:
        * \brief Reset the motion step data.
        */
       void resetMotionStep();
-    
+
       /**
        * \brief Prepare for a normal goal.
        *
        * \param last_point indicating if it is the last point in the current trajectory.
        */
       void prepareNormalGoal(const bool last_point);
-      
+
       /**
        * \brief Prepare for a ramp down goal.
        *
        * \param do_stop indicating if a stop should be performed.
        */
       void prepareRampDownGoal(const bool do_stop);
-      
+
       /**
        * \brief Prepare for a static position goal.
        *
@@ -874,7 +874,7 @@ private:
        * \param fast_transition indicating if a fast transition should be done.
        */
       void prepareStaticGoal(const wrapper::trajectory::StaticPositionGoal& position_goal, const bool fast_transition);
-      
+
       /**
        * \brief Prepare for a static velocity goal.
        *
@@ -899,7 +899,7 @@ private:
       {
         return ((interpolator.getDuration() - data.time_passed) < 0.5*Constants::RobotController::LOWEST_SAMPLE_TIME);
       }
-      
+
       /**
        * \brief Update the interpolator according to the specified internal goal.
        *
@@ -941,7 +941,7 @@ private:
        * \brief The interpolation (i.e. reference point to the robot controller).
        */
       wrapper::trajectory::PointGoal interpolation;
-      
+
       /**
        * \brief The interpolation manager.
        */
@@ -956,7 +956,7 @@ private:
        * \return double containing the estimation.
        */
       double estimateDuration();
-      
+
       /**
        * \brief Check if the conditions has been satisfied for a joint goal.
        *
@@ -964,7 +964,7 @@ private:
        * \param feedback containing the feedback.
        */
       void checkConditions(const wrapper::Joints& goal, const wrapper::Joints& feedback);
-      
+
       /**
        * \brief Check if the conditions has been satisfied for a Cartesian goal.
        *
@@ -972,7 +972,7 @@ private:
        * \param feedback containing the feedback.
        */
       void checkConditions(const wrapper::Cartesian& goal, const wrapper::Cartesian& feedback);
-      
+
       /**
        * \brief Check if the conditions has been satisfied for a quaternion goal.
        *
@@ -980,35 +980,35 @@ private:
        * \param feedback containing the feedback.
        */
       void checkConditions(const wrapper::Quaternion& goal, const wrapper::Quaternion& feedback);
-      
+
       /**
        * \brief Transfer values from an external robot goal to the internal goal.
        *
        * \param source containing the values to transfer.
        */
       void transfer(const wrapper::trajectory::RobotGoal& source);
-      
+
       /**
        * \brief Transfer values from an external external goal to the internal goal.
        *
        * \param source containing the values to transfer.
        */
       void transfer(const wrapper::trajectory::ExternalGoal& source);
-      
+
       /**
        * \brief Transfer values from an external static position goal to the internal goal.
        *
        * \param source containing the values to transfer.
        */
       void transfer(const wrapper::trajectory::StaticPositionGoal& source);
-      
+
       /**
        * \brief Transfer values from an external static velocity goal to the internal goal.
        *
        * \param source containing the values to transfer.
        */
       void transfer(const wrapper::trajectory::StaticVelocityGoal& source);
-      
+
       /**
        * \brief Constant for a condition [degrees or mm] for when a point is considered to be reached.
        */
@@ -1023,7 +1023,7 @@ private:
        * \brief Constant for static goal ramp in duration [s].
        */
       const double STATIC_GOAL_DURATION;
-      
+
       /**
        * \brief Constant for static goal ramp in short duration [s].
        */
@@ -1033,7 +1033,7 @@ private:
        * \brief Conditions for the interpolator.
        */
       EGMInterpolator::Conditions interpolator_conditions_;
-      
+
       /**
        * \brief Flag indicating if the joint position and Cartesian pose conditions has been met.
        */
@@ -1068,7 +1068,7 @@ private:
       b_(1.0),
       k_(1.0)
       {}
-      
+
       /**
        * \brief Update the controller, and prepare for a new motion.
        *
@@ -1095,7 +1095,7 @@ private:
        * \param p_references for containing the current reference values.
        */
       void checkForVelocityTransition(wrapper::trajectory::PointGoal* p_references);
-      
+
       /**
        * \brief Calculate the joint output (i.e. positions or velocities).
        *
@@ -1108,7 +1108,7 @@ private:
                      wrapper::Joints* p_ref,
                      const wrapper::Joints& fdb,
                      const wrapper::Joints& start);
-      
+
       /**
        * \brief Calculate the Cartesian output (i.e. positions or linear velocities).
        *
@@ -1121,7 +1121,7 @@ private:
                      wrapper::Cartesian* p_ref,
                      const wrapper::Cartesian& fdb,
                      const wrapper::Cartesian& start);
-      
+
       /**
        * \brief Calculate the Euler output (i.e. angular velocities).
        *
@@ -1145,34 +1145,34 @@ private:
       void calculate(wrapper::Quaternion* p_out,
                      const wrapper::Quaternion& ref,
                      const wrapper::Quaternion& fdb);
-      
+
       /**
        * \brief The assumed active EGM mode.
        */
       EGMModes egm_mode_;
-      
+
       /**
        * \brief The initial references sent to the robot controller (for the current motion).
        */
       wrapper::trajectory::PointGoal initial_references_;
-      
+
       /**
        * \brief Flag indicating if the interface is in normal state of not.
        */
       bool is_normal_state_;
-      
+
       /**
        * \brief Flag indicating if linear interpolation is used or not.
        */
       bool is_linear_;
 
       /**
-       * \brief Flag indicating that a velocity transition should be performed. 
+       * \brief Flag indicating that a velocity transition should be performed.
        */
       bool do_velocity_transition_;
 
       /**
-       * \brief Ramp factor that goes from 1 -> 0 according to 0.5*cos(pi*x) + 0.5, where x = [0, 1]. 
+       * \brief Ramp factor that goes from 1 -> 0 according to 0.5*cos(pi*x) + 0.5, where x = [0, 1].
        */
       double a_;
 
@@ -1180,13 +1180,13 @@ private:
        * \brief Ramp factor that goes from 1 -> 0 according to 0.5*cos(pi*x + pi) + 0.5, where x = [0, 1].
        */
       double b_;
-      
+
       /**
        * \brief Proportional controller gain.
        */
       double k_;
     };
-    
+
     /**
      * \brief Prepare the trajectory motion for the new callback.
      *
@@ -1198,7 +1198,7 @@ private:
      * \brief Reset the trajectory motion data.
      */
     void resetTrajectoryMotion();
-        
+
     /**
      * \brief Process the normal state.
      */
@@ -1208,7 +1208,7 @@ private:
      * \brief Process the ramp down state.
      */
     void processRampDownState();
-    
+
     /**
      * \brief Process the static goal state.
      */
@@ -1218,7 +1218,7 @@ private:
      * \brief Update the current goal, i.e. retrive a new goal point from the currently active trajectory.
      */
     void updateNormalGoal();
-    
+
     /**
      * \brief Store the current goal, in the front of the currently active trajectory.
      */
@@ -1248,7 +1248,7 @@ private:
      * \brief Manager for the motion steps, i.e. handle current goal and generating interpolation output.
      */
     MotionStep motion_step_;
-    
+
     /**
      * \brief Controller for calculating the outputs to send to the robot controller, based on the interpolation results
      *        and current feedback.
@@ -1265,7 +1265,7 @@ private:
      */
     TrajectoryConfiguration configurations_;
   };
-  
+
   /**
    * \brief Initialize the callback.
    *
@@ -1283,7 +1283,7 @@ private:
    * \return string& containing the reply.
    */
   const std::string& callback(const UDPServerData& server_data);
-  
+
   /**
    * \brief The interface's configuration.
    */

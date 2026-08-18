@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
  *
- * Copyright (c) 
+ * Copyright (c)
  * 2015, ABB Schweiz AG
  * 2021, JOiiNT LAB, Fondazione Istituto Italiano di Tecnologia, Intellimech Consorzio per la Meccatronica.
  * All rights reserved.
@@ -34,12 +34,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  ***********************************************************************************************************************
- * 
+ *
  * Authors: Gianluca Lentini, Ugo Alberto Simioni
  * Date:18/01/2022
  * Version 1.0
  * Description: this package provides a ROS node that communicates with the controller using Robot Web Services 2.0, original code can be retrieved at https://github.com/ros-industrial/abb_libegm
- * 
+ *
  ***********************************************************************************************************************
  */
 
@@ -182,7 +182,7 @@ bool EGMBaseInterface::InputContainer::estimateAllVelocities()
                                  previous_.feedback().robot().cartesian().pose(),
                                  estimated_sample_time_);
   }
-  
+
   if (success)
   {
     success = estimateVelocities(current_.mutable_feedback()->mutable_external()->mutable_joints()->mutable_velocity(),
@@ -209,7 +209,7 @@ bool EGMBaseInterface::InputContainer::estimateAllVelocities()
                                  previous_.planned().robot().cartesian().pose(),
                                  estimated_sample_time_);
   }
-  
+
   if (success)
   {
     success = estimateVelocities(current_.mutable_planned()->mutable_external()->mutable_joints()->mutable_velocity(),
@@ -248,14 +248,14 @@ void EGMBaseInterface::OutputContainer::prepareOutputs(const InputContainer& inp
     p_robot->mutable_joints()->mutable_position()->CopyFrom(feedback.robot().joints().position());
     p_robot->mutable_cartesian()->mutable_pose()->CopyFrom(feedback.robot().cartesian().pose());
     p_external->mutable_joints()->mutable_position()->CopyFrom(feedback.external().joints().position());
-    
+
     // Joint velocities.
     p_robot->mutable_joints()->clear_velocity();
     for (int i = 0; i < feedback.robot().joints().velocity().values_size(); ++i)
     {
       p_robot->mutable_joints()->mutable_velocity()->add_values(0.0);
     }
-    
+
     p_external->mutable_joints()->clear_velocity();
     for (int i = 0; i < feedback.external().joints().velocity().values_size(); ++i)
     {
@@ -368,7 +368,7 @@ void EGMBaseInterface::OutputContainer::constructReply(const BaseConfiguration& 
   {
     success = constructCartesianBody(configuration);
   }
-    
+
   if (success)
   {
     success = egm_sensor_.SerializeToString(&reply_);
@@ -599,7 +599,7 @@ bool EGMBaseInterface::OutputContainer::constructCartesianBody(const BaseConfigu
     // EGM sensor message.
     EgmPlanned* planned = egm_sensor_.mutable_planned();
     planned->clear_cartesian();
-    
+
     if (pose.has_position())
     {
       planned->mutable_cartesian()->mutable_pos()->set_x(pose.position().x());
@@ -613,7 +613,7 @@ bool EGMBaseInterface::OutputContainer::constructCartesianBody(const BaseConfigu
       planned->mutable_cartesian()->mutable_euler()->set_y(pose.euler().y());
       planned->mutable_cartesian()->mutable_euler()->set_z(pose.euler().z());
     }
-    
+
     if (pose.has_quaternion())
     {
       planned->mutable_cartesian()->mutable_orient()->set_u0(pose.quaternion().u0());
@@ -677,7 +677,7 @@ bool EGMBaseInterface::OutputContainer::constructCartesianBody(const BaseConfigu
  * Primary methods
  */
 
-EGMBaseInterface::EGMBaseInterface(boost::asio::io_service& io_service,
+EGMBaseInterface::EGMBaseInterface(boost::asio::io_context& io_service,
                                    const unsigned short port_number,
                                    const BaseConfiguration& configuration)
 :
@@ -784,7 +784,7 @@ bool EGMBaseInterface::initializeCallback(const UDPServerData& server_data)
     }
   }
 
-  // Extract information from the parsed message. 
+  // Extract information from the parsed message.
   if (success)
   {
     success = inputs_.extractParsedInformation(configuration_.active.axes);

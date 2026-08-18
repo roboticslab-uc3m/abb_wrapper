@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
  *
- * Copyright (c) 
+ * Copyright (c)
  * 2015, ABB Schweiz AG
  * 2021, JOiiNT LAB, Fondazione Istituto Italiano di Tecnologia, Intellimech Consorzio per la Meccatronica.
  * All rights reserved.
@@ -34,12 +34,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  ***********************************************************************************************************************
- * 
+ *
  * Authors: Gianluca Lentini, Ugo Alberto Simioni
  * Date:18/01/2022
  * Version 1.0
  * Description: this package provides a ROS node that communicates with the controller using Robot Web Services 2.0, original code can be retrieved at https://github.com/ros-industrial/abb_libegm
- * 
+ *
  ***********************************************************************************************************************
  */
 
@@ -77,10 +77,10 @@ public:
    * \param port_number for the server's UDP socket.
    * \param configuration for the interface's configuration.
    */
-  EGMBaseInterface(boost::asio::io_service& io_service,
+  EGMBaseInterface(boost::asio::io_context& io_service,
                    const unsigned short port_number,
                    const BaseConfiguration& configuration = BaseConfiguration());
-  
+
   /**
    * \brief Checks if the underlying server was successfully initialized or not.
    *
@@ -135,7 +135,7 @@ protected:
      * \brief Default constructor.
      */
     InputContainer();
-    
+
     /**
      * \brief Parse an array, into an abb::egm::EgmRobot message.
      *
@@ -145,7 +145,7 @@ protected:
      * \return bool indicating if the parsing was successful or not.
      */
     bool parseFromArray(const char* data, const int bytes_transferred);
-    
+
     /**
      * \brief Extract the parsed information.
      *
@@ -159,42 +159,42 @@ protected:
      * \brief Update the previous inputs with the current inputs.
      */
     void updatePrevious();
-    
+
     /**
      * \brief Retrieve the initial inputs (i.e initial robot controller outputs).
      *
      * \return Input with the initial inputs.
      */
     const wrapper::Input& initial() const { return initial_; };
-    
+
     /**
      * \brief Retrieve the current inputs (i.e. current robot controller outputs).
      *
      * \return Input with the current inputs.
      */
     const wrapper::Input& current() const { return current_; };
-    
+
     /**
      * \brief Retrieve the previous inputs (i.e. previous robot controller outputs).
      *
      * \return Input with the previous inputs.
      */
     const wrapper::Input& previous() const { return previous_; };
-    
+
     /**
      * \brief Retrieve the estimated sample time [s].
      *
      * \return double containing the estimation.
      */
     double estimated_sample_time() const { return estimated_sample_time_; };
-    
+
     /**
      * \brief Retrieve a flag, indicating if the received message was the first in a communication session.
      *
      * \return bool indicating if it was the first message or not.
      */
     bool first_message() const { return first_message_; };
-    
+
     /**
      * \brief Check if the robot controller's states are ok.
      *
@@ -211,19 +211,19 @@ protected:
      * \return double containing the estimation.
      */
     double estimateSampleTime();
-    
+
     /**
      * \brief Estimate the joint and the Cartesian velocities.
      *
      * \return bool indicating if the estimation was successful or not.
      */
     bool estimateAllVelocities();
-    
+
     /**
      * \brief Container for the "raw" EGM robot message.
      */
     EgmRobot egm_robot_;
-    
+
     /**
      * \brief Container for the initial inputs, extracted from the EGM robot message.
      */
@@ -233,17 +233,17 @@ protected:
      * \brief Container for the current inputs, extracted from the EGM robot message.
      */
     wrapper::Input current_;
-    
+
     /**
      * \brief Container for the previous inputs, extracted from the EGM robot message.
      */
     wrapper::Input previous_;
-    
+
     /**
      * \brief Flag indicating if new data has been received.
      */
     bool has_new_data_;
-    
+
     /**
      * \brief Flag indicating if the interface's callback has been called before or not.
      */
@@ -259,7 +259,7 @@ protected:
      */
     double estimated_sample_time_;
   };
-  
+
   /**
    * \brief Class for containing outputs to a UDP server.
    */
@@ -270,33 +270,33 @@ protected:
      * \brief Default constructor.
      */
     OutputContainer();
-    
+
     /**
      * \brief Prepare the outputs.
      *
      * \param inputs containing the inputs.
      */
     void prepareOutputs(const InputContainer& inputs);
-    
+
     /**
      * \brief Generate demo outputs.
      *
      * \param inputs containing the inputs from the robot controller.
      */
     void generateDemoOutputs(const InputContainer& inputs);
-    
+
     /**
      * \brief Construct the reply string.
      *
      * \param configuration containing the current configurations for the interface.
      */
     void constructReply(const BaseConfiguration& configuration);
-    
+
     /**
      * \brief Update the previous outputs with the current outputs.
      */
     void updatePrevious();
-    
+
     /**
      * \brief Retrieve the previous outputs sent to the robot controller.
      *
@@ -310,7 +310,7 @@ protected:
      * \return unsigned int containing the sequence number.
      */
     unsigned int sequence_number() const { return sequence_number_; };
-    
+
     /**
      * \brief Retrieve the reply string, serialized from the current references.
      *
@@ -322,12 +322,12 @@ protected:
      * \brief Clear the reply content.
      */
     void clear_reply() { reply_.clear(); };
-    
+
     /**
      * \brief Container for the current outputs to send to the robot controller.
      */
     wrapper::Output current;
-    
+
   private:
     /**
      * \brief Generate demo quaternion outputs.
@@ -341,7 +341,7 @@ protected:
      * \brief Construct the header.
      */
     void constructHeader();
-    
+
     /**
      * \brief Construct the joint body.
      *
@@ -350,7 +350,7 @@ protected:
      * \return bool indicating if the construction was successful or not.
      */
     bool constructJointBody(const BaseConfiguration& configuration);
-    
+
     /**
      * \brief Construct the Cartesian body.
      *
@@ -359,12 +359,12 @@ protected:
      * \return bool indicating if the construction was successful or not.
      */
     bool constructCartesianBody(const BaseConfiguration& configuration);
-    
+
     /**
      * \brief Container for the actual EGM sensor message.
      */
     EgmSensor egm_sensor_;
-    
+
     /**
      * \brief Container for the previous outputs sent to the robot controller.
      */
@@ -448,7 +448,7 @@ protected:
    * \param max_time specifying the max amount of time to log.
    */
   void logData(const InputContainer& inputs, const OutputContainer& outputs, const double max_time);
-  
+
   /**
    * \brief Initialize the callback.
    *
@@ -477,7 +477,7 @@ protected:
    * \brief Logger, for logging EGM messages to a CSV file.
    */
   boost::shared_ptr<EGMLogger> p_logger_;
-  
+
   /**
    * \brief The interface's configuration.
    */
@@ -487,7 +487,7 @@ protected:
    * \brief Server for managing the communication with the robot controller.
    */
   UDPServer udp_server_;
-  
+
 private:
   /**
    * \brief Handle callback requests from an UDP server.

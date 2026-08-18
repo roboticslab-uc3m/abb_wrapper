@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
  *
- * Copyright (c) 
+ * Copyright (c)
  * 2015, ABB Schweiz AG
  * 2021, JOiiNT LAB, Fondazione Istituto Italiano di Tecnologia, Intellimech Consorzio per la Meccatronica.
  * All rights reserved.
@@ -34,12 +34,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  ***********************************************************************************************************************
- * 
+ *
  * Authors: Gianluca Lentini, Ugo Alberto Simioni
  * Date:18/01/2022
  * Version 1.0
  * Description: this package provides a ROS node that communicates with the controller using Robot Web Services 2.0, original code can be retrieved at https://github.com/ros-industrial/abb_libegm
- * 
+ *
  ***********************************************************************************************************************
  */
 
@@ -51,7 +51,7 @@
 namespace abb
 {
 namespace egm
-{ 
+{
 /**
  * \brief Struct for containing data from the UDPServer class.
  */
@@ -118,7 +118,7 @@ public:
    * \param port_number for the server's UDP socket.
    * \param p_interface that processes the received messages.
    */
-  UDPServer(boost::asio::io_service& io_service,
+  UDPServer(boost::asio::io_context& io_service,
             unsigned short port_number,
             AbstractUDPServerInterface* p_interface);
 
@@ -173,7 +173,7 @@ private:
    * \brief A buffer for storing the server's serialized inbound messages (i.e. the robot's outbound messages).
    */
   char receive_buffer_[BUFFER_SIZE];
-  
+
   /**
    * \brief Pointer to an object that is derived from AbstractUDPSeverInterface, which processes the received messages.
    */

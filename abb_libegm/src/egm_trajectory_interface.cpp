@@ -1,6 +1,6 @@
 /***********************************************************************************************************************
  *
- * Copyright (c) 
+ * Copyright (c)
  * 2015, ABB Schweiz AG
  * 2021, JOiiNT LAB, Fondazione Istituto Italiano di Tecnologia, Intellimech Consorzio per la Meccatronica.
  * All rights reserved.
@@ -34,12 +34,12 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  ***********************************************************************************************************************
- * 
+ *
  * Authors: Gianluca Lentini, Ugo Alberto Simioni
  * Date:18/01/2022
  * Version 1.0
  * Description: this package provides a ROS node that communicates with the controller using Robot Web Services 2.0, original code can be retrieved at https://github.com/ros-industrial/abb_libegm
- * 
+ *
  ***********************************************************************************************************************
  */
 
@@ -398,13 +398,13 @@ double EGMTrajectoryInterface::TrajectoryMotion::MotionStep::estimateDuration()
   // Note: The duration estimation should only be used if no duration has been specified externally, and it includes:
   //       * Resetting any velocity and acceleration goals.
   //       * Estimation of the duration based on the goal and feedback position differences,
-  //         and it assumes 1 degree/s and 1 mm/s as desired velocities. 
+  //         and it assumes 1 degree/s and 1 mm/s as desired velocities.
 
   double estimate = 0.0;
-  
+
   unsigned int robot_joints = data.feedback.robot().joints().position().values_size();
   unsigned int external_joints = data.feedback.robot().joints().position().values_size();
-  
+
   // Reset robot joint values.
   reset(internal_goal.mutable_robot()->mutable_joints()->mutable_velocity(), robot_joints);
   reset(internal_goal.mutable_robot()->mutable_joints()->mutable_acceleration(), robot_joints);
@@ -417,7 +417,7 @@ double EGMTrajectoryInterface::TrajectoryMotion::MotionStep::estimateDuration()
   // Reset external joint values.
   reset(internal_goal.mutable_external()->mutable_joints()->mutable_velocity(), external_joints);
   reset(internal_goal.mutable_external()->mutable_joints()->mutable_acceleration(), external_joints);
-  
+
   // Estimate the duration.
   switch (data.mode)
   {
@@ -439,7 +439,7 @@ double EGMTrajectoryInterface::TrajectoryMotion::MotionStep::estimateDuration()
       Euler temp;
       convert(&temp, internal_goal.robot().cartesian().pose().quaternion());
       estimate = std::max(estimate, findMaxDifference(temp, data.feedback.robot().cartesian().pose().euler()));
-    
+
       estimate = std::max(estimate, findMaxDifference(internal_goal.external().joints().position(),
                                                       data.feedback.external().joints().position()));
     }
@@ -488,7 +488,7 @@ void EGMTrajectoryInterface::TrajectoryMotion::MotionStep::transfer(const RobotG
   copyPresent(p_cartesian->mutable_velocity(), source.cartesian().velocity());
   copyPresent(p_cartesian->mutable_acceleration(), source.cartesian().acceleration());
 
-  // Note: The internal goal's Euler field is used to contain angular velocities. 
+  // Note: The internal goal's Euler field is used to contain angular velocities.
   //       Therefore, convert any Euler goal to quaternions.
   if (source.cartesian().pose().has_euler())
   {
@@ -525,7 +525,7 @@ void EGMTrajectoryInterface::TrajectoryMotion::MotionStep::transfer(const Static
   copyPresent(p_cartesian->mutable_pose()->mutable_position(), source.robot().cartesian().position());
   copyPresent(p_external_joints->mutable_position(), source.external());
 
-  // Note: The internal goal's Euler field is used to contain angular velocities. 
+  // Note: The internal goal's Euler field is used to contain angular velocities.
   //       Therefore, convert any Euler goal to quaternions.
   if (source.robot().cartesian().has_euler())
   {
@@ -592,7 +592,7 @@ void EGMTrajectoryInterface::TrajectoryMotion::Controller::calculate(Output* p_o
     a_ = (p_motion_step->interpolation.reach() ? 0.5*std::cos(M_PI*t) + 0.5 : 1.0);
     b_ = 0.5*std::cos(M_PI*t + M_PI) + 0.5;
 
-    switch (egm_mode_) 
+    switch (egm_mode_)
     {
       case EGMJoint:
       {
@@ -601,7 +601,7 @@ void EGMTrajectoryInterface::TrajectoryMotion::Controller::calculate(Output* p_o
                   p_motion_step->interpolation.mutable_robot()->mutable_joints()->mutable_position(),
                   p_motion_step->data.feedback.robot().joints().position(),
                   initial_references_.robot().joints().position());
-          
+
         calculate(p_outputs->mutable_external()->mutable_joints()->mutable_position(),
                   p_motion_step->interpolation.mutable_external()->mutable_joints()->mutable_position(),
                   p_motion_step->data.feedback.external().joints().position(),
@@ -615,7 +615,7 @@ void EGMTrajectoryInterface::TrajectoryMotion::Controller::calculate(Output* p_o
                   p_motion_step->interpolation.mutable_robot()->mutable_joints()->mutable_velocity(),
                   p_motion_step->data.feedback.robot().joints().velocity(),
                   initial_references_.robot().joints().velocity());
-          
+
         calculate(p_outputs->mutable_external()->mutable_joints()->mutable_velocity(),
                   p_motion_step->interpolation.mutable_external()->mutable_joints()->mutable_velocity(),
                   p_motion_step->data.feedback.external().joints().velocity(),
@@ -630,7 +630,7 @@ void EGMTrajectoryInterface::TrajectoryMotion::Controller::calculate(Output* p_o
                   p_motion_step->interpolation.mutable_robot()->mutable_cartesian()->mutable_pose()->mutable_position(),
                   p_motion_step->data.feedback.robot().cartesian().pose().position(),
                   initial_references_.robot().cartesian().pose().position());
-        
+
         calculate(p_outputs->mutable_robot()->mutable_cartesian()->mutable_pose()->mutable_quaternion(),
                   p_motion_step->interpolation.robot().cartesian().pose().quaternion(),
                   p_motion_step->data.feedback.robot().cartesian().pose().quaternion());
@@ -1012,7 +1012,7 @@ void EGMTrajectoryInterface::TrajectoryMotion::processRampDownState()
           data_.pending_events.do_ramp_down = false;
           data_.pending_events.do_stop = false;
           data_.pending_events.do_resume = false;
-          
+
           if (data_.pending_events.do_static_goal_start)
           {
             state_manager_.setPendingState(StaticGoal, None);
@@ -1338,7 +1338,7 @@ bool EGMTrajectoryInterface::TrajectoryMotion::retrieveExecutionProgress(traject
  * Primary methods
  */
 
-EGMTrajectoryInterface::EGMTrajectoryInterface(boost::asio::io_service& io_service,
+EGMTrajectoryInterface::EGMTrajectoryInterface(boost::asio::io_context& io_service,
                                                const unsigned short port_number,
                                                const TrajectoryConfiguration& configuration)
 :
@@ -1418,11 +1418,11 @@ bool EGMTrajectoryInterface::initializeCallback(const UDPServerData& server_data
     }
   }
 
-  // Extract information from the parsed message. 
+  // Extract information from the parsed message.
   if (success)
   {
     success = inputs_.extractParsedInformation(configuration_.active.base.axes);
-    
+
     {
       boost::lock_guard<boost::mutex> lock(session_data_.mutex);
 
